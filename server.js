@@ -204,3 +204,14 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+// Random 1 sual - daily question üçün
+app.get('/api/questions/daily', (req, res) => {
+  const shuffled = [...questions].sort(() => 0.5 - Math.random());
+  const dailyQuestion = shuffled[0];
+  
+  res.json({
+    success: true,
+    data: dailyQuestion
+  });
+});
