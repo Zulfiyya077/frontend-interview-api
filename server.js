@@ -1862,9 +1862,22 @@ app.post('/api/auth/login', (req, res) => {
       });
     }
 
-    // Find user
-    const user = users.find(u => u.email === email && u.password === password);
+    // Normalize email (lowercase) for comparison
+    const normalizedEmail = email.toLowerCase().trim();
+    const normalizedPassword = password.trim();
+
+    // Find user (case-insensitive email comparison)
+    const user = users.find(u => 
+      u.email.toLowerCase() === normalizedEmail && 
+      u.password === normalizedPassword
+    );
+
     if (!user) {
+      console.log('Login failed:', { 
+        receivedEmail: normalizedEmail, 
+        receivedPassword: normalizedPassword,
+        availableUsers: users.map(u => ({ id: u.id, email: u.email }))
+      });
       return res.status(401).json({
         error: 'Authentication failed',
         message: 'Invalid email or password'
@@ -1879,6 +1892,7 @@ app.post('/api/auth/login', (req, res) => {
       user: userWithoutPassword
     });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({
       error: 'Login failed',
       message: error.message
