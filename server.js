@@ -1790,7 +1790,15 @@ app.get('/', (req, res) => {
 
 // Error handling middleware
 // In-memory user storage (in production, use a database)
-const users = [];
+const users = [
+  {
+    id: 1,
+    username: 'zulfiyya',
+    email: 'mammadlizulfiyya@gmail.com',
+    password: 'zulfiyya07',
+    createdAt: new Date().toISOString()
+  }
+];
 
 // Authentication Routes
 // POST /api/auth/register
