@@ -1452,6 +1452,7 @@ app.get('/api/categories/:category', (req, res) => {
 
 // Alternative endpoint for frontend compatibility: /api/questions/category/:category
 app.get('/api/questions/category/:category', (req, res) => {
+  console.log('📥 Request received:', req.method, req.path, req.params);
   const { category } = req.params;
   const { subcategory } = req.query;
   
@@ -1464,6 +1465,8 @@ app.get('/api/questions/category/:category', (req, res) => {
       q.subcategory && q.subcategory.toLowerCase() === subcategory.toLowerCase()
     );
   }
+
+  console.log(`✅ Found ${categoryQuestions.length} questions for category: ${category}`);
 
   // Return questions array directly for frontend
   res.json({
