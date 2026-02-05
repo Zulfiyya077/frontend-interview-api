@@ -1450,6 +1450,29 @@ app.get('/api/categories/:category', (req, res) => {
   });
 });
 
+// Alternative endpoint for frontend compatibility: /api/questions/category/:category
+app.get('/api/questions/category/:category', (req, res) => {
+  const { category } = req.params;
+  const { subcategory } = req.query;
+  
+  let categoryQuestions = top100Questions.filter(q => 
+    q.category.toLowerCase() === category.toLowerCase()
+  );
+
+  if (subcategory) {
+    categoryQuestions = categoryQuestions.filter(q =>
+      q.subcategory && q.subcategory.toLowerCase() === subcategory.toLowerCase()
+    );
+  }
+
+  // Return questions array directly for frontend
+  res.json({
+    category,
+    total: categoryQuestions.length,
+    questions: categoryQuestions
+  });
+});
+
 // Get all available filters
 app.get('/api/filters', (req, res) => {
   const categories = [...new Set(top100Questions.map(q => q.category))];
